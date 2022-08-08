@@ -1,0 +1,18 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: temp
+        run: |
+          echo temp
+  test2:
+    runs-on: self-hosted
+    steps:
+      - name: temp
+        run: |
+          echo temp

@@ -1,0 +1,60 @@
+name: Test coverage
+
+on:
+  workflow_call:
+    inputs:
+      build-args:
+        required: false
+        type: string
+      command:
+        required: false
+        type: string
+      coverage-catalog:
+        default: coverage
+        required: false
+        type: string
+      dockerfile:
+        required: false
+        type: string
+      target:
+        required: false
+        type: string
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Build the image
+        uses: Be-Health-Tech/docker-build-push@master
+        with:
+          buildArgs: ${{ input.build-args }}
+          dockerfile: ${{ inputs.dockerfile }}
+          enableBuildKit: true
+          image: ${{ github.event.repository.name }}
+          push: false
+          tags: ${{ github.job }}
+          target: ${{ inputs.target }}
+      - name: Set container name
+        run: |
+          echo CONTAINER_NAME=${RANDOM} >> ${GITHUB_ENV}
+      - name: Run
+        run: |
+          docker run --name=${{ env.CONTAINER_NAME }} ${{ github.event.repository.name }}:${{ github.job }} ${{ inputs.command }}
+      - name: Get coverage
+        if: success() || failure()
+        run: |
+          docker cp ${{ env.CONTAINER_NAME }}:${{ inputs.coverage-catalog }} .
+      - name: Clean up
+        if: success() || failure()
+        run: |
+          docker rm ${{ env.CONTAINER_NAME }}
+      - uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: Test coverage results
+          path: coverage
+          retention-days: 7

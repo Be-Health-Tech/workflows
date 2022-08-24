@@ -1,0 +1,34 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      build-args:
+        type: string
+        required: false
+      dockerfile:
+        type: string
+        required: false
+      version:
+        type: string
+        required: true
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+        with:
+          ref: v${{ inputs.version }}
+          submodules: recursive
+      - uses: Be-Health-Tech/docker-build-push@master
+        with:
+          buildArgs: ${{ inputs.build-args }}
+          dockerfile: ${{ inputs.dockerfile }}
+          enableBuildKit: true
+          image: ${{ github.repository }}
+          password: ${{ github.token }}
+          registry: ghcr.io
+          tags: ${{ inputs.version }}
+          username: ${{ github.actor }}

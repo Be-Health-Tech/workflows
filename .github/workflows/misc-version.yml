@@ -1,0 +1,27 @@
+name: Version
+
+on:
+  workflow_call:
+    outputs:
+      new-release-published:
+        value: ${{ jobs.version.outputs.new-release-published }}
+      new-release-version:
+        value: ${{ jobs.version.outputs.new-release-version }}
+
+jobs:
+  version:
+    runs-on: self-hosted
+    outputs:
+      new-release-published: ${{ steps.semantic.outputs.new_release_published }}
+      new-release-version: ${{ steps.semantic.outputs.new_release_version }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Semantic Release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          extra_plugins: |
+            @semantic-release/exec

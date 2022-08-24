@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      cluster:
+        required: true
+        type: string
+      service-name:
+        default: ${{ github.event.repository.name }}
+        required: false
+        type: string
+      to-tag:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Get lower case repo name
+        run: |
+          IMAGE_PATH=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+          echo CONTAINER_REGISTRY_PATH=ghcr.io/${IMAGE_PATH} >> ${GITHUB_ENV}
+      - name: Login to ghcr.io
+      - name: Re tag
+        run: |
+          docker pull ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.version }} ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.to-tag }}
+      - name: Deploy
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          aws ecs update-service --cluster ${{ inputs.cluster }} --service ${{ service-name }} --force-new-deployment
+          aws ecs wait services-stable --cluster ${{ inputs.cluster }} --service ${{ service-name }}

@@ -31,7 +31,7 @@ jobs:
       - name: Build the image
         uses: Be-Health-Tech/docker-build-push@master
         with:
-          buildArgs: ${{ input.build-args }}
+          buildArgs: ${{ inputs.build-args }}
           dockerfile: ${{ inputs.dockerfile }}
           enableBuildKit: true
           image: ${{ github.event.repository.name }}

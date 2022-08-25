@@ -26,6 +26,11 @@ jobs:
           IMAGE_PATH=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
           echo CONTAINER_REGISTRY_PATH=ghcr.io/${IMAGE_PATH} >> ${GITHUB_ENV}
       - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
       - name: Re tag
         run: |
           docker pull ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.version }} ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.to-tag }}

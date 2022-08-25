@@ -22,6 +22,7 @@ jobs:
         with:
           ref: v${{ inputs.version }}
           submodules: recursive
+          token: ${{ secrets.GH_TOKEN_BHT }}
       - uses: Be-Health-Tech/docker-build-push@master
         with:
           buildArgs: ${{ inputs.build-args }}

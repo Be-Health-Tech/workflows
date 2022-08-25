@@ -10,6 +10,7 @@ on:
         required: false
         type: string
       dockerfile:
+        default: Dockerfile
         required: false
         type: string
       run:

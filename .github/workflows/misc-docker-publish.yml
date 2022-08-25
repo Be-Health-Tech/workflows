@@ -7,6 +7,7 @@ on:
         type: string
         required: false
       dockerfile:
+        default: Dockerfile
         type: string
         required: false
       version:

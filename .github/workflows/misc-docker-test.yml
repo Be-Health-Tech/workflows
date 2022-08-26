@@ -10,7 +10,7 @@ on:
         required: false
         type: string
       coverage-catalog:
-        default: coverage
+        default: /app/coverage
         required: false
         type: string
       dockerfile:

@@ -21,7 +21,7 @@ jobs:
         id: semantic
         uses: cycjimmy/semantic-release-action@v3
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_BHT }}
         with:
           extra_plugins: |
             @semantic-release/exec

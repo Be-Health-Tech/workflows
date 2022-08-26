@@ -24,6 +24,8 @@ on:
 jobs:
   test:
     runs-on: self-hosted
+    env:
+      GH_TOKEN_BHT: ${{ secrets.GH_TOKEN_BHT }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3

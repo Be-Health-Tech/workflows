@@ -40,5 +40,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         run: |
-          aws ecs update-service --cluster ${{ inputs.cluster }} --service ${{ service-name }} --force-new-deployment
-          aws ecs wait services-stable --cluster ${{ inputs.cluster }} --service ${{ service-name }}
+          aws ecs update-service --cluster ${{ inputs.cluster }} --service ${{ inputs.service-name }} --force-new-deployment
+          aws ecs wait services-stable --cluster ${{ inputs.cluster }} --service ${{ inputs.service-name }}

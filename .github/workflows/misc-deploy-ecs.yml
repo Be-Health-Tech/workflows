@@ -33,7 +33,9 @@ jobs:
           password: ${{ github.token }}
       - name: Re tag
         run: |
-          docker pull ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.version }} ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.to-tag }}
+          docker pull ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.version }}
+          docker tag ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.version }} ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.to-tag }}
+          docker push ${{ env.CONTAINER_REGISTRY_PATH }}:${{ inputs.to-tag }}
       - name: Deploy
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}

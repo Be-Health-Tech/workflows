@@ -27,3 +27,4 @@ jobs:
         with:
           extra_plugins: |
             @semantic-release/exec
+            semantic-release-json-changelog-generator

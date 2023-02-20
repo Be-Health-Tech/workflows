@@ -27,6 +27,9 @@ jobs:
     env:
       GH_TOKEN_BHT: ${{ secrets.GH_TOKEN_BHT }}
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Check out the repo
         uses: actions/checkout@v3
         with:

@@ -41,7 +41,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=${{ needs.version.outputs.new-release-version }}
       - name: Build and push

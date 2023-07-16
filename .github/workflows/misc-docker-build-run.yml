@@ -27,20 +27,20 @@ jobs:
     env:
       GH_TOKEN_BHT: ${{ secrets.GH_TOKEN_BHT }}
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Check out the repo
         uses: actions/checkout@v3
         with:
           submodules: recursive
           token: ${{ secrets.GH_TOKEN_BHT }}
       - name: Build the image
-        uses: Be-Health-Tech/docker-build-push@master
+        uses: docker/build-push-action@v4
         with:
-          buildArgs: ${{ inputs.build-args }}
-          dockerfile: ${{ inputs.dockerfile }}
-          enableBuildKit: true
-          image: ${{ github.event.repository.name }}
+          build-args: ${{ inputs.build-args }}
+          file: ${{ inputs.dockerfile }}
           push: false
-          tags: ${{ github.job }}
+          tags: ${{ github.event.repository.name }}:${{ github.job }}
           target: ${{ inputs.target }}
       - name: Run
         if: inputs.run == true

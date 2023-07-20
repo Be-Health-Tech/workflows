@@ -38,6 +38,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           build-args: ${{ inputs.build-args }}
+          context: '.'
           file: ${{ inputs.dockerfile }}
           push: false
           tags: ${{ github.event.repository.name }}:${{ github.job }}

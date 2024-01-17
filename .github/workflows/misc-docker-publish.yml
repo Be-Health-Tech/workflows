@@ -38,7 +38,7 @@ jobs:
         with:
           buildArgs: ${{ inputs.build-args }}
           dockerfile: ${{ inputs.dockerfile }}
-          enableBuildKit: true
+          enableBuildKit: false
           image: ${{ github.repository }}
           password: ${{ github.token }}
           registry: ghcr.io
